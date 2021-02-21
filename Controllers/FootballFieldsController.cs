@@ -2,25 +2,25 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BattavellirAPI.Domain.Models;
-using BattavellirAPI.Domain.Services;
+using BattavellirAPI.Domain.Data;
+
 
 namespace BattavellirAPI.Controllers
 {
     [Route("/api/[controller]")]
     public class FootballFieldsController : Controller
     {
-        private readonly IFootballFieldService _footballFieldService;
+        private readonly FootballFieldContext _context;
         
-        public FootballFieldsController(IFootballFieldService _footballFieldService)
+        public FootballFieldsController(FootballFieldContext context)
         {
-            _footballFieldService = _footballFieldService;   
+            _context = context;      
         }
 
         [HttpGet]
-        public async Task<IEnumerable<FootballField>> GetAllAsync()
+        public ActionResult GetAll()
         {
-            var footballFields = await _footballFieldService.ListAsync();
-            return footballFields;
+            return Ok(_context.FootballFields);
         }
     }
 }
